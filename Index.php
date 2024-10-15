@@ -1,10 +1,10 @@
 <?php
 
     //PDO connection
-    $conn = new PDO('mysql:dbname=webshop;host=localhost', "root", "");
+    $conn = new PDO('mysql:dbname=Onlinestore;host=localhost', "root", "");
     
-    //select * from products and fetch as array
-    $statement = $conn->prepare('SELECT * FROM products');
+    //select * from products and fetch as array 
+    $statement = $conn->prepare('SELECT * FROM  products');
     $statement->execute();
     $products = $statement->fetchAll(PDO::FETCH_ASSOC);
     
@@ -33,7 +33,7 @@
     <h1>Welcome!</h1>
     <?php foreach($products as $product): ?>
     <article>
-        <h2><?php echo $product['title']; ?> : <?php echo $product['price']; ?></h2>
+        <h2><?php echo $product['product_name']; ?> : <?php echo $product['unit_price']; ?></h2>
     </article>
     <?php endforeach; ?>
 </body>
