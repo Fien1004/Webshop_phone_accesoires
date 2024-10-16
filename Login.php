@@ -1,9 +1,22 @@
 <?php
 
 	function canLogin($p_email, $p_password){
-		if($p_email === "fien@shop.com" && $p_password === "12345isnotsecure"){
-			return true;
-		} else{
+
+		$conn = new PDO('mysql:dbname=Onlinestore;host=localhost', "root", "");
+		$statement = $conn->prepare("select * from users where email = :email");
+		$statement->bindValue(':email', $p_email);
+		$statement->execute();
+
+		$user = $statement->fetch(PDO::FETCH_ASSOC);
+			
+		if($user){
+			$hash = $user['password'];
+			if(password_verify($p_password, $hash)){
+				return true;
+			}
+
+		}else{
+			//not found
 			return false;
 		}
 	}

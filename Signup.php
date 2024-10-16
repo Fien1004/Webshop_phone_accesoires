@@ -1,39 +1,22 @@
 <?php
+    if(!empty($_POST)){
+        $email = $_POST['email'];
+        $password = $_POST['password'];
 
-$users = [
-    "fien@shop.com" => "12345isnotsecure"
-];
+        $options = [
+            'cost' => 12,
+        ];
+        $hash = password_hash($password, PASSWORD_DEFAULT, $options);
 
-// Function to sign up user
-function canSignup($email, $password, $users){
-    if(!isset($users[$email])) {
-        // If email not registered, sign up is possible
-        return true;
-    } else {
-        // If email is registered
-        return false;
+        $conn = new PDO('mysql:dbname=Onlinestore;host=localhost', "root", "");
+        $statement = $conn->prepare('insert into users (email, password) values (:email, :password)');
+        $statement->bindValue(':email', $email);//safe tegen sql injectie
+        $statement->bindValue(':password', $hash);//safe tegen sql injectie
+        $statement->execute();
+	
     }
-}
 
-if(!empty($_POST)){
-    $email = $_POST['email']; // name of input
-    $password = $_POST['password']; // name of input
-
-    if(canSignup($email, $password, $users)){
-        $users[$email] = $password;
-
-        session_start();
-        $_SESSION['loggedin'] = true;
-        $_SESSION['email'] = $email;
-
-        header('location: login.php');
-    } else {
-        $error = true;
-    }
-}
-
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">

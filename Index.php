@@ -1,27 +1,8 @@
 <?php
-
-    //PDO connection
-    $conn = new PDO('mysql:dbname=Onlinestore;host=localhost', "root", "");
-    
-    //select * from products and fetch as array 
-    $statement = $conn->prepare('SELECT * FROM  products');
-    $statement->execute();
-    $products = $statement->fetchAll(PDO::FETCH_ASSOC);
-    
-    //Dit hier onder is hetzelfde al hier boven
-    //$conn = new mysqli('localhost', 'root', '', 'webshop');
-    /*checking for errors
-    if($conn->connect_error){
-        echo "ERROR";
-    }else{
-        echo "Connected";
-    }
-
-    $sql = 'SELECT * FROM products';
-    $result = $conn->query($sql);
-    $products = $result->fetch_all(MYSQLI_ASSOC);
-    var_dump($products);*/
-
+      session_start();
+      if($_SESSION["loggedin"] !== true){
+        header("Location: login.php");
+      }
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,6 +11,16 @@
     <title>Webshop</title>
 </head>
 <body>
+<nav class="navbar">
+    <a href="index.php" class="logo">Webshop</a>
+    <a href="index.php">Home</a>
+    
+    <form action="" method="get">
+      <input type="text" name="search">
+    </form>
+    
+    <a href="logout.php" class="navbar__logout">Hi <?php echo htmlspecialchars($_SESSION['email']); ?>, logout?</a>
+</nav>
     <h1>Welcome!</h1>
     <?php foreach($products as $product): ?>
     <article>
