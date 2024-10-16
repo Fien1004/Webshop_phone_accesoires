@@ -49,6 +49,9 @@
                 <div class="form__field">
                     <input type="submit" value="Sign Up" class="btn btn--primary">  
                 </div>
+                <div class="form__field">
+				<p>Do you have an account? <a href="login.php" class="btn btn--secondary">Log in</a></p>
+			    </div>
             </form>
         </div>
     </div>
