@@ -1,46 +1,52 @@
 <?php
+include_once(__DIR__ . "/classes/Db.php");
+session_start();
 
-	function canLogin($p_email, $p_password){
+function canLogin($p_email, $p_password) {
+    try {
+        // Gebruik de Db-class om de verbinding te krijgen
+        $conn = Db::getConnection();
 
-		$conn = new PDO('mysql:dbname=Onlinestore;host=localhost', "root", "");
-		$statement = $conn->prepare("select * from users where email = :email");
-		$statement->bindValue(':email', $p_email);
-		$statement->execute();
+        // Bereid de SQL-statement voor
+        $statement = $conn->prepare("SELECT firstname, password FROM users WHERE email = :email");
+        $statement->bindValue(':email', $p_email);
+        $statement->execute();
 
-		$user = $statement->fetch(PDO::FETCH_ASSOC);
-			
-		if($user){
-			$hash = $user['password'];
-			if(password_verify($p_password, $hash)){
-				return true;
-			}
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-		}else{
-			//not found
-			return false;
-		}
-	}
+        // Controleer of de gebruiker bestaat en of het wachtwoord klopt
+        if ($user && password_verify($p_password, $user['password'])) {
+            return $user; // Retourneer het hele $user array
+        } else {
+            return false;
+        }
+    } catch (Exception $e) {
+        // Eventuele verbindingsfouten afvangen
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
 
-	if(!empty($_POST)){
-		$email = $_POST['email']; //name van input
-		$password = $_POST['password']; //name van input
+if (!empty($_POST)) {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
+    $user = canLogin($email, $password); // Roep canLogin aan en sla het resultaat op in $user
 
-		if(canLogin($email, $password)){
-			session_start();
-			$_SESSION['loggedin'] = true;
-			$_SESSION['email'] = $email;
+    if ($user) {
+        $_SESSION['loggedin'] = true;
+        $_SESSION['email'] = $email;
+        $_SESSION['firstname'] = $user['firstname']; // Voeg voornaam toe aan sessie
 
-			header('location: index.php');
-			
-		} else{
-			//NIET OK
-			$error = true;
-		}
-	}
-	
-
-?><!DOCTYPE html>
+        header('location: index.php');
+        exit;
+    } else {
+        // NIET OK
+        $error = true;
+    }
+}
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">

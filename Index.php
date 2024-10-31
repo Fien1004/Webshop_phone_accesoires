@@ -1,15 +1,23 @@
 <?php
-    $conn = new PDO('mysql:dbname=Onlinestore;host=localhost', "root", "");
-    //select * from products and fetch as array
+include_once(__DIR__."/classes/Db.php");
+session_start();
+if($_SESSION["loggedin"] !== true){
+    header("Location: login.php");
+    exit;
+}
+
+
+try {
+    $conn = Db::getConnection();
+    //echo "Verbinding succesvol!<br>";
     $statement = $conn->prepare('SELECT * FROM products');
     $statement->execute();
     $products = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-      session_start();
-      if($_SESSION["loggedin"] !== true){
-        header("Location: login.php");
-      }
-?><!DOCTYPE html>
+} catch (PDOException $e) {
+    echo 'Fout bij het verbinden met de database: ' . $e->getMessage();
+}
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -25,7 +33,8 @@
       <input type="text" name="search">
     </form>
     
-    <a href="logout.php" class="navbar__logout">Hi <?php echo htmlspecialchars($_SESSION['email']); ?>, logout?</a>
+    <a href="logout.php" class="navbar__logout">Hi <?php echo htmlspecialchars($_SESSION['firstname']); ?>, logout?</a>
+
 </nav>
     <h1>Welcome!</h1>
 
