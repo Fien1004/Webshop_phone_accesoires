@@ -7,7 +7,7 @@ class Db
     public static function getConnection()
     {
         if (self::$conn == null){
-            echo "✅";
+            //echo "✅";
             self::$conn = new PDO('mysql:host=localhost;dbname=Onlinestore', 'root', '');
             return self::$conn;
         }else{

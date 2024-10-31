@@ -37,6 +37,13 @@ if (!empty($_POST)) {
         $_SESSION['loggedin'] = true;
         $_SESSION['email'] = $email;
         $_SESSION['firstname'] = $user['firstname']; // Voeg voornaam toe aan sessie
+		
+		    // Controleer of de gebruiker admin is
+			if ($email === 'fien@shop.com') {
+				$_SESSION['is_admin'] = true;
+			} else {
+				$_SESSION['is_admin'] = false;
+			}
 
         header('location: index.php');
         exit;
