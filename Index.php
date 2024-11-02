@@ -70,10 +70,14 @@ try {
 
 <h1>Welcome <?php echo htmlspecialchars($_SESSION['firstname']); ?>!</h1>
 
-<?php foreach($products as $product): ?>
-    <article>
-        <h2><?php echo htmlspecialchars($product['product_name']); ?> : <?php echo htmlspecialchars($product['unit_price']); ?></h2>
-    </article>
-<?php endforeach; ?>
+<div class="product-grid">
+    <?php foreach($products as $product): ?>
+        <article>
+            <img src="<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>" style="max-width: 200px; margin-bottom: 10px;">
+            <h2><?php echo htmlspecialchars($product['product_name']); ?></h2>
+            <?php echo htmlspecialchars($product['unit_price']); ?>
+        </article>
+    <?php endforeach; ?>
+</div>
 </body>
 </html>

@@ -105,6 +105,32 @@
   text-decoration: underline;
 }
 
+/*Artikel page*/
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* vier gelijke kolommen */
+  gap: 16px; /* ruimte tussen de artikelen */
+  margin: 16px; /* marge rondom de grid */
+}
+
+article {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center; /* centreert de tekst in de artikelen */
+}
+
+
+img {
+  max-width: 100%; /* Zorg ervoor dat de afbeelding responsief is */
+  height: auto;
+}
+
+.categories a {
+  margin-right: 10px;
+}
+
 /*Admin page*/
 
 .product-container {
