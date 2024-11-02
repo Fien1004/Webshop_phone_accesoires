@@ -45,7 +45,6 @@ try {
 </head>
 <body>
 <nav class="navbar">
-    <!-- <a href="index.php" class="logo">Webshop</a> -->
     <a href="index.php">Home</a>
     
     <form action="" method="get">

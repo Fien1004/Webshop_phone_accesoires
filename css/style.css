@@ -104,3 +104,22 @@
 .categories a:hover {
   text-decoration: underline;
 }
+
+/*Admin page*/
+
+.product-container {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.product-title {
+  font-size: 1.5em;
+  margin: 0;
+}
+
+.product-description,
+.product-price,
+.product-stock {
+  margin: 5px 0;
+}
