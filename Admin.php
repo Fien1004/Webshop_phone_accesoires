@@ -121,8 +121,8 @@ if (isset($_POST['search'])) {
         <select name="category_id" required>
             <option value="">Selecteer een categorie</option>
             <option value="1">Telefoonhoesjes</option>
-            <option value="2">Powerbanks</option>
-            <option value="3">Screen Protectors</option>
+            <option value="2">Telefoonaccessoires</option>
+            <option value="3">Tassen</option>
         </select>
         <button type="submit" name="add">Voeg toe</button>
     </form>
