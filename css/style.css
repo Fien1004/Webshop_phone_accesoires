@@ -1,3 +1,12 @@
+/* Algemene styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+
+}
+
+
 .storelogin
 {
   height: 100vh;
@@ -115,12 +124,9 @@
 }
 
 article {
-  border: 1px solid #ccc;
   padding: 16px;
-  border-radius: 8px;
   text-align: center; /* centreert de tekst in de artikelen */
 }
-
 
 img {
   max-width: 100%; /* Zorg ervoor dat de afbeelding responsief is */
@@ -129,7 +135,60 @@ img {
 
 .categories a {
   margin-right: 10px;
+  color: black;
 }
+
+.product{
+  text-decoration: none;
+  color: black;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.product:hover{
+  border: 3px solid #ccc;
+}
+
+/*product page*/
+.product-details {
+  display: flex;
+  flex-direction: row;
+  margin: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-details__img {
+  width: 50%;
+  height: auto;
+  object-fit: cover;
+}
+
+.product-details__info {
+  padding: 20px;
+  margin-top: 8em;
+  width: 50%;
+}
+
+.product-details__info h1 {
+  font-size: 35px;
+  margin-bottom: 10px;
+}
+
+.product-details__price {
+  font-size: 20px;
+  color: black;
+  margin-bottom: 15px;
+}
+
+.product-details__description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #555;
+}
+
 
 /*Admin page*/
 
@@ -149,3 +208,5 @@ img {
 .product-stock {
   margin: 5px 0;
 }
+
+

@@ -72,11 +72,13 @@ try {
 
 <div class="product-grid">
     <?php foreach($products as $product): ?>
+        <a class="product" href="product.php?id=<?php echo $product['id']; ?>">
         <article>
-            <img src="<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>" style="max-width: 200px; margin-bottom: 10px;">
-            <h2><?php echo htmlspecialchars($product['product_name']); ?></h2>
-            <?php echo htmlspecialchars($product['unit_price']); ?>
-        </article>
+                <img src="<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>" style="max-width: 200px; margin-bottom: 10px;">
+                <h2><?php echo htmlspecialchars($product['product_name']); ?></h2>
+                <p>Prijs: €<?php echo htmlspecialchars($product['unit_price']); ?></p>
+            </article>
+        </a>
     <?php endforeach; ?>
 </div>
 </body>
