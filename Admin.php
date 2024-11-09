@@ -197,6 +197,7 @@ if (isset($_POST['delete'])) {
             <option value="1">Telefoonhoesjes</option>
             <option value="2">Telefoonaccessoires</option>
             <option value="3">Tassen</option>
+            <option value="4">Airpods accessoires</option>
         </select>
         <button type="submit" name="add">Voeg toe</button>
     </form>
