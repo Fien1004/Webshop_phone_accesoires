@@ -67,7 +67,7 @@
             <h1><?php echo htmlspecialchars($product['product_name']); ?></h1>
             <p class="product-details__price">Prijs: €<?php echo htmlspecialchars($product['unit_price']); ?></p>
             <h3>Overzicht</h3>
-            <p class="product-details__description"><?php echo htmlspecialchars($product['discription']); ?></p>
+            <p class="product-details__description"><?php echo html_entity_decode($product['discription']); ?></p>
         </div>
     </div>
     
