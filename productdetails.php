@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/bootstrap.php';
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -6,8 +8,6 @@ error_reporting(E_ALL);
 require_once(__DIR__ . '/vendor/autoload.php');
 
 use Fienwouters\Onlinestore\Product;
-session_start();
-
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("Location: login.php");
     exit();

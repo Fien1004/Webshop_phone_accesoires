@@ -1,6 +1,6 @@
 <?php
-include_once(__DIR__ . "/classes/Db.php");
 require_once __DIR__ . '/bootstrap.php';
+include_once(__DIR__ . "/classes/Db.php");
 
 use Fienwouters\Onlinestore\Db;
 
@@ -13,23 +13,33 @@ if (!isset($_SESSION['user'])) {
 $user = $_SESSION['user'];
 $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == true;
 
-// Haal producten op uit de database
-try {
-    $conn = Db::getConnection();
-    $statement = $conn->prepare("SELECT * FROM products");
-    $statement->execute();
-    $products = $statement->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    echo "Fout bij het ophalen van producten: " . $e->getMessage();
-}
-
 // Haal categorieën op uit de database
 try {
+    $conn = Db::getConnection();
     $statement = $conn->prepare("SELECT * FROM categories");
     $statement->execute();
     $categories = $statement->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Fout bij het ophalen van categorieën: " . $e->getMessage();
+}
+
+// Haal producten op uit de database
+$products = [];
+try {
+    $conn = Db::getConnection();
+    
+    if (isset($_GET['category'])) {
+        $category_id = $_GET['category'];
+        $statement = $conn->prepare("SELECT * FROM products WHERE category_id = :category_id");
+        $statement->bindValue(':category_id', $category_id, PDO::PARAM_INT);
+    } else {
+        $statement = $conn->prepare("SELECT * FROM products");
+    }
+    
+    $statement->execute();
+    $products = $statement->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Fout bij het ophalen van producten: " . $e->getMessage();
 }
 ?>
 <!DOCTYPE html>
@@ -48,9 +58,9 @@ try {
         <input type="text" name="search" placeholder="Zoek producten...">
     </form>
 
-<!-- Admin link voor admin-gebruiker --> 
-    <?php if ($isAdmin): ?> 
-        <a href="admin.php" class="navbar__admin">Admin</a> 
+    <!-- Admin link voor admin-gebruiker -->
+    <?php if ($isAdmin): ?>
+        <a href="admin.php" class="navbar__admin">Admin</a>
     <?php endif; ?>
     
     <a href="logout.php" class="navbar__logout">Logout?</a>

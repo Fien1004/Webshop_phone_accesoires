@@ -21,7 +21,7 @@ class Db
                 return null;
             }
         } else {
-            echo "✅ Verbinding hergebruikt!";
+            //echo "✅ Verbinding hergebruikt!";
             return self::$conn;
         }
     }
