@@ -1,5 +1,5 @@
 <?php
-namespace Fienwouters\Onlinestore\interfaces;
+namespace Fienwouters\Onlinestore\Interfaces;
 
 interface iProduct {
     public function getId();

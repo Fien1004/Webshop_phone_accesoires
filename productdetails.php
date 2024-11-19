@@ -3,8 +3,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include_once(__DIR__ . "/classes/Db.php");
-include_once(__DIR__ . "/classes/Product.php");
+require_once(__DIR__ . '/vendor/autoload.php');
+
 use Fienwouters\Onlinestore\Product;
 session_start();
 
@@ -54,16 +54,13 @@ if (isset($_GET['id'])) {
             <input type="text" name="search" placeholder="Zoek producten...">
         </form>
 
-        <!-- Admin link voor admin-gebruiker -->
-        <?php if ($isAdmin): ?>
-            <a href="admin.php" class="navbar__admin">Admin</a>
+        <!-- Admin link voor admin-gebruiker --> 
+        <?php if ($isAdmin): ?> 
+            <a href="admin.php" class="navbar__admin">Admin</a> 
         <?php endif; ?>
         
         <a href="logout.php" class="navbar__logout">Logout?</a>
     </nav>
-
-    <!-- Debug: Controleer productdata -->
-    <pre><?php print_r($productData); ?></pre>
 
     <!-- Product -->
     <div class="product-details">
