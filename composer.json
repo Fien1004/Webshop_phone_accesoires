@@ -1,0 +1,15 @@
+{
+    "name": "fienwouters/onlinestore",
+    "autoload": {
+        "psr-4": {
+            "Fienwouters\\Onlinestore\\": "classes/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Fien Wouters",
+            "email": "r0937053@student.thomasmore.be"
+        }
+    ],
+    "require": {}
+}
