@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>IMDFlix</title>
+  <title>Login</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>

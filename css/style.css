@@ -4,12 +4,9 @@ body {
   margin: 1;
   padding: 1;
   background-color: #faf9f8;
-
 }
 
-
-.storelogin
-{
+.storelogin {
   height: 100vh;
   display: grid;
   grid-template-columns: 1fr [form] minmax(240px, 450px) 1fr;
@@ -18,8 +15,7 @@ body {
   align-items: center;
 }
 
-.form--login
-{
+.form--login {
   background-color: beige;
   padding: 1em;
   color: black;
@@ -27,8 +23,7 @@ body {
   grid-row: form;
 }
 
-.form__error
-{
+.form__error {
   background-color: #6972b6;
   font-weight: lighter;
   padding: 0.3em 1em;
@@ -36,49 +31,56 @@ body {
   font-size: 0.9em;
 }
 
-.form__field
-{
+.form__field {
   padding-bottom: 1em;
 }
 
-.form__field label
-{
+.form__field label {
   display: block;
   margin-bottom: 0.2em;
 }
 
-.form__field .label__inline
-{
+.form__field .label__inline {
   display: inline-block;
 }
 
 .form__field input[type=text], 
-.form__field input[type=password] 
-{
+.form__field input[type=password], 
+.form__field input[type=email] {
   width: 100%;
   padding: 0.3em;
   font-size: 1.4em;
+  box-sizing: border-box; /* Zorgt ervoor dat padding niet de breedte beïnvloedt */
 }
 
-.btn
-{
+.btn {
   width: 100%;
+  padding: 0.3em;
+  font-size: 1.4em;
+  box-sizing: border-box; /* Zorgt ervoor dat padding niet de breedte beïnvloedt */
   margin: 0.5em auto;
+  text-align: center;
+  display: inline-block; /* Zorg ervoor dat de knop inline-block is voor consistentie */
 }
 
-.btn--primary
-{
+.btn--primary {
   background-color: blue;
   color: white;
-  text-align: center;
   border: none;
   padding: 0.3em 2em;
-  font-size: 1.4em;
 }
 
-/*navbar*/
-.navbar
-{
+/* Specifieke stijl voor login en signup links */
+.btn--secondary {
+  color: blue;
+  border: none;
+  font-size: 1em;
+  display: inline-block;
+  width: auto; /* Zorgt ervoor dat de breedte van de link automatisch is */
+}
+
+/* navbar */
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -86,16 +88,14 @@ body {
   border-bottom: 1px solid #ccc;
 }
 
-.navbar a
-{
+.navbar a {
   margin: 0 15px;
   text-decoration: none;
   color: #333;
   font-weight: bold;
 }
 
-.navbar a:hover
-{
+.navbar a:hover {
   color: #007bff;
 }
 
@@ -115,7 +115,7 @@ body {
   text-decoration: underline;
 }
 
-/*Artikel page*/
+/* Artikel page */
 
 .product-grid {
   display: grid;
@@ -139,18 +139,18 @@ img {
   color: black;
 }
 
-.product{
+.product {
   text-decoration: none;
   color: black;
   border: 1px solid #ccc;
   border-radius: 8px;
 }
 
-.product:hover{
+.product:hover {
   border: 3px solid #ccc;
 }
 
-/*product page*/
+/* product page */
 .product-details {
   display: flex;
   flex-direction: row;
@@ -190,8 +190,7 @@ img {
   color: #555;
 }
 
-
-/*Admin page*/
+/* Admin page */
 
 .product-container {
   border: 1px solid #ccc;
@@ -209,5 +208,3 @@ img {
 .product-stock {
   margin: 5px 0;
 }
-
-

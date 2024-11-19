@@ -1,7 +1,6 @@
 <?php
-include_once(__DIR__ . "/classes/Db.php");
-include_once(__DIR__ . "/classes/User.php");
-
+require_once __DIR__ . '/bootstrap.php';
+use Fienwouters\Onlinestore\User;
 
 if (!empty($_POST)) {
     $email = $_POST['email'];
@@ -10,6 +9,11 @@ if (!empty($_POST)) {
     $lastname = $_POST['lastname'];
 
     try {
+        // Controleer of het e-mailadres al bestaat
+        if (User::emailExists($email)) {
+            throw new Exception('Er bestaat al een account met dit e-mailadres');
+        }
+
         // Maak een nieuw User object aan
         $user = new User();
         $user->setFirstname($firstname)
@@ -38,7 +42,7 @@ if (!empty($_POST)) {
     <div class="storelogin">
         <div class="form form--login">
             <form action="" method="post">
-                <h2 form__title>Sign Up</h2>
+                <h2 class="form__title">Sign Up</h2>
 
                 <?php if (isset($error)): ?>
                 <div class="form__error">
@@ -47,27 +51,27 @@ if (!empty($_POST)) {
                 <?php endif; ?>
 
                 <div class="form__field">
-                    <label for="Firstname">Firstname</label>
+                    <label for="firstname">Firstname</label>
                     <input type="text" name="firstname">
                 </div>
 
                 <div class="form__field">
-                    <label for="Lastname">Lastname</label>
+                    <label for="lastname">Lastname</label>
                     <input type="text" name="lastname">
                 </div>
 
                 <div class="form__field">
-                    <label for="Email">Email</label>
-                    <input type="text" name="email">
+                    <label for="email">Email</label>
+                    <input type="email" name="email">
                 </div>
 
                 <div class="form__field">
-                    <label for="Password">Password</label>
+                    <label for="password">Password</label>
                     <input type="password" name="password">
                 </div>
 
                 <div class="form__field">
-                    <input type="submit" value="Sign Up" class="btn btn--primary">  
+                    <input type="submit" value="Sign Up" class="btn btn--primary">
                 </div>
                 <div class="form__field">
                     <p>Do you have an account? <a href="login.php" class="btn btn--secondary">Log in</a></p>
