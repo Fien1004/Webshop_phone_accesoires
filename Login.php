@@ -1,55 +1,25 @@
 <?php
 include_once(__DIR__ . "/classes/Db.php");
-session_start();
+require_once __DIR__ . '/bootstrap.php';
 
-function canLogin($p_email, $p_password) {
-    try {
-        // Gebruik de Db-class om de verbinding te krijgen
-        $conn = Db::getConnection();
+use Fienwouters\Onlinestore\User;
 
-        // Bereid de SQL-statement voor
-        $statement = $conn->prepare("SELECT firstname, password FROM users WHERE email = :email");
-        $statement->bindValue(':email', $p_email);
-        $statement->execute();
-
-        $user = $statement->fetch(PDO::FETCH_ASSOC);
-
-        // Controleer of de gebruiker bestaat en of het wachtwoord klopt
-        if ($user && password_verify($p_password, $user['password'])) {
-            return $user; // Retourneer het hele $user array
-        } else {
-            return false;
-        }
-    } catch (Exception $e) {
-        // Eventuele verbindingsfouten afvangen
-        echo "Error: " . $e->getMessage();
-        return false;
-    }
-}
-
-if (!empty($_POST)) {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $user = canLogin($email, $password); // Roep canLogin aan en sla het resultaat op in $user
+    $user = User::canLogin($email, $password);
 
     if ($user) {
-        $_SESSION['loggedin'] = true;
-        $_SESSION['email'] = $email;
-        $_SESSION['firstname'] = $user['firstname']; // Voeg voornaam toe aan sessie
-		
-		    // Controleer of de gebruiker admin is
-			if ($email === 'fien@shop.com') {
-				$_SESSION['is_admin'] = true;
-			} else {
-				$_SESSION['is_admin'] = false;
-			}
-
-        header('location: index.php');
-        exit;
+		session_start();
+        $_SESSION['user'] = $user;
+		$_SESSION['is_admin'] = ($email === 'fien@shop.com');
+		$_SESSION['firstname'] = $user['firstname'];
+		$_SESSION["loggedin"] = true;
+        header("Location: index.php");
+        exit();
     } else {
-        // NIET OK
-        $error = true;
+        $error = "Ongeldige logingegevens.";
     }
 }
 ?>

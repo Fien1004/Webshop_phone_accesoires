@@ -1,123 +1,58 @@
 <?php
 session_start();
 include_once(__DIR__ . "/classes/Db.php");
+include_once(__DIR__ . "/classes/Product.php");
+use Fienwouters\Onlinestore\Product;
 
-// Controleer of de gebruiker is ingelogd en adminrechten heeft
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $_SESSION['is_admin'] !== true) {
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || !isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
     header("Location: login.php");
-    exit;
+    exit();
 }
 
-class Admin {
-    // functie om product toe te voegen aan de database
-    public function addProduct($product_name, $discription, $unit_price, $stock, $category_id, $img) {
-        try {
-            $conn = Db::getConnection();
-            $statement = $conn->prepare("INSERT INTO products (product_name, discription, unit_price, stock, category_id, img) VALUES (:product_name, :discription, :unit_price, :stock, :category_id, :img)");
-            $statement->bindValue(':product_name', $product_name);
-            $statement->bindValue(':discription', $discription);
-            $statement->bindValue(':unit_price', $unit_price);
-            $statement->bindValue(':stock', $stock);
-            $statement->bindValue(':category_id', $category_id);
-            $statement->bindValue(':img', $img);
-            $statement->execute();
-            return true; // Geeft aan dat het product succesvol is toegevoegd
-        } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
-            return false; // Geeft aan dat er een fout is opgetreden
-        }
-    }
-
-    // functie om producten te zoeken in de database
-    public function searchProduct($search) {
-        try {
-            $conn = Db::getConnection();
-            $statement = $conn->prepare("SELECT * FROM products WHERE product_name LIKE :search OR discription LIKE :search");
-            $statement->bindValue(':search', '%' . $search . '%');
-            $statement->execute();
-            return $statement->fetchAll(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
-            return [];
-        }
-    }
-
-    public function updateProduct($product_id, $product_name, $discription, $unit_price, $img, $stock, $category_id) {
-        try {
-            $conn = Db::getConnection();
-            $statement = $conn->prepare("UPDATE products SET product_name = :product_name, discription = :discription, unit_price = :unit_price, img = :img, stock = :stock, category_id = :category_id WHERE id = :product_id");
-            $statement->bindValue(':product_id', $product_id);
-            $statement->bindValue(':product_name', $product_name);
-            $statement->bindValue(':discription', $discription);
-            $statement->bindValue(':unit_price', $unit_price);
-            $statement->bindValue(':img', $img);
-            $statement->bindValue(':stock', $stock);
-            $statement->bindValue(':category_id', $category_id);
-            $statement->execute();
-        } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
-        }
-    }
-
-    public function deleteProduct($product_id) {
-        try {
-            $conn = Db::getConnection();
-            $statement = $conn->prepare("DELETE FROM products WHERE id = :product_id");
-            $statement->bindValue(':product_id', $product_id);
-            $statement->execute();
-        } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
-        }
-    }
-}
-
-// Maak een nieuw Admin object aan
-$admin = new Admin();
+// Maak een nieuw Product object aan voor de admin functionaliteiten
 $products = []; // Zorg ervoor dat de $products variabele wordt gedefinieerd
 
-// Controleer of het product toevoegen formulier is verzonden
 if (isset($_POST['add'])) {
-    $product_name = trim($_POST['product_name']);
-    $discription = trim($_POST['discription']);
-    $unit_price = $_POST['unit_price'];
-    $stock = $_POST['stock'];
-    $category_id = $_POST['category_id'];
-    $img = $_POST['img'];
+    $product = new Product();
+    $product->setName(trim($_POST['product_name']))
+            ->setDescription(trim($_POST['discription']))
+            ->setPrice($_POST['unit_price'])
+            ->setStock($_POST['stock'])
+            ->setCategoryId($_POST['category_id'])
+            ->setImage($_POST['img']);
 
-    // Roep de addProduct functie aan
-    if ($admin->addProduct($product_name, $discription, $unit_price, $stock, $category_id, $img)) {
+    if ($product->save()) {
         echo "Product is toegevoegd!";
     }
 }
 
-// Controleer of het zoekformulier is verzonden
 if (isset($_POST['search'])) {
     $search = trim($_POST['search']);
-    $products = $admin->searchProduct($search);
+    $products = Product::search($search);
 }
 
-// Bijwerken van een product
 if (isset($_POST['update'])) {
-    $product_id = $_POST['product_id'];
-    $product_name = trim($_POST['update_product_name']);
-    $discription = trim($_POST['update_discription']);
-    $unit_price = $_POST['update_unit_price'];
-    $stock = $_POST['update_stock'];
-    $category_id = $_POST['update_category_id'];
-    $img = $_POST['update_img'];
-
-    $admin->updateProduct($product_id, $product_name, $discription, $unit_price, $img, $stock, $category_id);
-    echo "Product is bijgewerkt!";
+    $product = new Product();
+    $product->setId($_POST['product_id'])
+            ->setName(trim($_POST['update_product_name']))
+            ->setDescription(trim($_POST['update_discription']))
+            ->setPrice($_POST['update_unit_price'])
+            ->setImage($_POST['update_img'])
+            ->setStock($_POST['update_stock'])
+            ->setCategoryId($_POST['update_category_id']);
+    
+    if ($product->save()) {
+        echo "Product is bijgewerkt!";
+    }
 }
 
-// Verwijderen van een product
 if (isset($_POST['delete'])) {
-    $product_id = $_POST['product_id'];
-    $admin->deleteProduct($product_id);
-    echo "Product is verwijderd!";
+    if (Product::delete($_POST['product_id'])) {
+        echo "Product is verwijderd!";
+    }
 }
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -1,38 +1,35 @@
 <?php
 include_once(__DIR__ . "/classes/Db.php");
-session_start();
-if ($_SESSION["loggedin"] !== true) {
+require_once __DIR__ . '/bootstrap.php';
+
+use Fienwouters\Onlinestore\Db;
+
+// Check of de gebruiker is ingelogd
+if (!isset($_SESSION['user'])) {
     header("Location: login.php");
-    exit;
+    exit();
 }
 
-// Bepaal of de ingelogde gebruiker de admin is
-$isAdmin = ($_SESSION['email'] === 'fien@shop.com');
+$user = $_SESSION['user'];
+$isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == true;
 
+// Haal producten op uit de database
 try {
     $conn = Db::getConnection();
-    
-    // Haal de categorieën op
-    $categoryStatement = $conn->prepare('SELECT * FROM categories');
-    $categoryStatement->execute();
-    $categories = $categoryStatement->fetchAll(PDO::FETCH_ASSOC);
-    
-    // Haal de geselecteerde categorie op
-    $categoryId = $_GET['category'] ?? null;
-
-    // Query om producten op te halen
-    $sql = 'SELECT * FROM products';
-    if ($categoryId) {
-        $sql .= ' WHERE category_id = :categoryId';
-    }
-    $statement = $conn->prepare($sql);
-    if ($categoryId) {
-        $statement->bindValue(':categoryId', $categoryId);
-    }
+    $statement = $conn->prepare("SELECT * FROM products");
     $statement->execute();
     $products = $statement->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    echo 'Fout bij het verbinden met de database: ' . $e->getMessage();
+    echo "Fout bij het ophalen van producten: " . $e->getMessage();
+}
+
+// Haal categorieën op uit de database
+try {
+    $statement = $conn->prepare("SELECT * FROM categories");
+    $statement->execute();
+    $categories = $statement->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Fout bij het ophalen van categorieën: " . $e->getMessage();
 }
 ?>
 <!DOCTYPE html>
@@ -51,9 +48,9 @@ try {
         <input type="text" name="search" placeholder="Zoek producten...">
     </form>
 
-    <!-- Admin link voor admin-gebruiker -->
-    <?php if ($isAdmin): ?>
-        <a href="admin.php" class="navbar__admin">Admin</a>
+<!-- Admin link voor admin-gebruiker --> 
+    <?php if ($isAdmin): ?> 
+        <a href="admin.php" class="navbar__admin">Admin</a> 
     <?php endif; ?>
     
     <a href="logout.php" class="navbar__logout">Logout?</a>
@@ -68,11 +65,11 @@ try {
     <?php endforeach; ?>
 </div>
 
-<h1>Welcome <?php echo htmlspecialchars($_SESSION['firstname']); ?>!</h1>
+<h1>Welcome <?php echo isset($_SESSION['firstname']) ? htmlspecialchars($_SESSION['firstname']) : 'Guest'; ?>!</h1>
 
 <div class="product-grid">
     <?php foreach($products as $product): ?>
-        <a class="product" href="product.php?id=<?php echo $product['id']; ?>">
+        <a class="product" href="productdetails.php?id=<?php echo $product['id']; ?>">
         <article>
                 <img src="<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>" style="max-width: 200px; margin-bottom: 10px;">
                 <h2><?php echo htmlspecialchars($product['product_name']); ?></h2>
