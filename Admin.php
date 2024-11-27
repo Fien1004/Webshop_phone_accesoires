@@ -4,7 +4,8 @@ include_once(__DIR__ . "/classes/Db.php");
 include_once(__DIR__ . "/classes/Product.php");
 use Fienwouters\Onlinestore\Product;
 
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || !isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $_SESSION['is_admin'] !== 1) {
+    // Als ze niet ingelogd zijn of geen admin, stuur ze naar de loginpagina
     header("Location: login.php");
     exit();
 }

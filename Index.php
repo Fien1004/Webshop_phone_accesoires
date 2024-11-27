@@ -10,8 +10,8 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
-$user = $_SESSION['user'];
-$isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == true;
+// Controleer of de gebruiker een admin is
+$isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
 
 // Haal categorieën op uit de database
 try {

@@ -1,11 +1,9 @@
 <?php
 require_once __DIR__ . '/bootstrap.php';
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 require_once(__DIR__ . '/vendor/autoload.php');
+
+use Fienwouters\Onlinestore\Review;
+
 
 use Fienwouters\Onlinestore\Product;
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
@@ -13,8 +11,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit();
 }
 
-// Bepaal of de ingelogde gebruiker de admin is
-$isAdmin = (isset($_SESSION['email']) && $_SESSION['email'] === 'fien@shop.com');
+// Controleer of de gebruiker een admin is
+$isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
 
 if (isset($_GET['id'])) {
     $product_id = $_GET['id'];
@@ -37,6 +35,10 @@ if (isset($_GET['id'])) {
     echo "Product niet gespecificeerd!";
     exit;
 }
+
+$allReviews = Review::getAll($product_id);
+//var_dump($allReviews);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,5 +74,85 @@ if (isset($_GET['id'])) {
             <p class="product-details__description"><?php echo html_entity_decode($productData['discription']); ?></p>
         </div>
     </div>
+
+    <!-- Review formulier -->
+    <h3>Laat een review achter:</h3>
+    <div id="review-form">
+        <input id="reviewText" type="text" placeholder="Schrijf hier je review...">
+        <select name="rating" id="rating" required>
+            <option value="">Kies een rating</option>
+            <option value="1">⭐☆☆☆☆</option>
+            <option value="2">⭐⭐☆☆☆</option>
+            <option value="3">⭐⭐⭐☆☆</option>
+            <option value="4">⭐⭐⭐⭐☆</option>
+            <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
+        </select>
+        <a href="#" id="addReview" data-product_id="<?php echo htmlspecialchars($product_id); ?>">Verstuur review</a>
+        </div>
+        <ul class="reviewslist">
+            <!-- Reviews worden hier ingeladen -->
+            <?php foreach($allReviews as $review): ?>
+                <li>
+                    <p><strong><?php echo htmlspecialchars($review['user_firstname']); ?></strong></p>
+                    <p>Rating: <?php echo htmlspecialchars($review['rating']); ?></p>
+                    <p><?php echo htmlspecialchars($review['text']); ?></p>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+
+    <script>
+        document.querySelector("#addReview").addEventListener("click", function(){
+            
+            //product_id?
+            //review tekst?
+            //rating?
+
+            let product_id = this.dataset.product_id; // Haal het product_id uit de dataset
+            let text = document.querySelector("#reviewText").value;
+            let rating = document.querySelector("#rating").value;
+
+            if (text === "" || rating === "") {
+                alert("Zorg ervoor dat je zowel de reviewtekst als de rating invult!");
+                return;
+            }
+
+            console.log("Product ID:", product_id);
+            console.log("Review tekst:", text);
+            console.log("Rating:", rating);
+            console.log("User ID:", <?php echo $_SESSION['user']['id']; ?>);
+            console.log("User firstname:", "<?php echo $_SESSION['firstname']; ?>");
+
+            //post naar databank (AJAX)
+            let formData = new FormData();
+            formData.append("text", text);
+            formData.append("rating", rating);
+            formData.append("product_id", product_id);
+
+            fetch("ajax/addReview.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text()) // Wijzig naar text() om ruwe serveroutput te inspecteren
+            .then(result => {
+                console.log("Serverresponse:", result); // Controleer de inhoud
+                let newReview = document.createElement("li");
+                newReview.innerHTML = result.body;
+                document
+                        .querySelector(".reviewslist")
+                        .appendChild(newReview);
+
+                // Reset de form-velden
+                document.querySelector("#reviewText").value = "";
+                document.querySelector("#rating").value = "";
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+
+
+        });
+
+    </script>
+
 </body>
 </html>

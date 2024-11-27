@@ -70,7 +70,7 @@ class User implements iUser {
             $statement->bindValue(':password', $this->password);
             return $statement->execute();
         } catch (PDOException $e) {
-            throw new Exception('Failed to save user: ' . $e->getMessage());
+            throw new \Exception('Failed to save user: ' . $e->getMessage());
         }
     }
 

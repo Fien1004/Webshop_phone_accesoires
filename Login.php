@@ -13,7 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($user) {
 		session_start();
         $_SESSION['user'] = $user;
-		$_SESSION['is_admin'] = ($email === 'fien@shop.com');
+		$_SESSION['user_id'] = $user['id'];
+		$_SESSION['is_admin'] = $user['is_admin']; // 1 = true, 0 = false
 		$_SESSION['firstname'] = $user['firstname'];
 		$_SESSION["loggedin"] = true;
         header("Location: index.php");
