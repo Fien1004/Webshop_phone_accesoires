@@ -1,7 +1,7 @@
 <?php
 namespace Fienwouters\Onlinestore;
 
-use Fienwouters\Onlinestore\Interfaces\iUser;
+use \Fienwouters\Onlinestore\Interfaces\iUser;
 use PDO;
 use PDOException;
 
