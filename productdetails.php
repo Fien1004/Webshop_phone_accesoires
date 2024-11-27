@@ -81,11 +81,11 @@ $allReviews = Review::getAll($product_id);
         <input id="reviewText" type="text" placeholder="Schrijf hier je review...">
         <select name="rating" id="rating" required>
             <option value="">Kies een rating</option>
-            <option value="1">⭐☆☆☆☆</option>
-            <option value="2">⭐⭐☆☆☆</option>
-            <option value="3">⭐⭐⭐☆☆</option>
-            <option value="4">⭐⭐⭐⭐☆</option>
-            <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
+            <option value="⭐☆☆☆☆">⭐☆☆☆☆</option>
+            <option value="⭐⭐☆☆☆">⭐⭐☆☆☆</option>
+            <option value="⭐⭐⭐☆☆">⭐⭐⭐☆☆</option>
+            <option value="⭐⭐⭐⭐☆">⭐⭐⭐⭐☆</option>
+            <option value="⭐️⭐️⭐️⭐️⭐️">⭐️⭐️⭐️⭐️⭐️</option>
         </select>
         <a href="#" id="addReview" data-product_id="<?php echo htmlspecialchars($product_id); ?>">Verstuur review</a>
         </div>
@@ -101,7 +101,9 @@ $allReviews = Review::getAll($product_id);
         </ul>
 
     <script>
-        document.querySelector("#addReview").addEventListener("click", function(){
+        document.querySelector("#addReview").addEventListener("click", function(e){
+
+            e.preventDefault();
             
             //product_id?
             //review tekst?
@@ -124,19 +126,27 @@ $allReviews = Review::getAll($product_id);
 
             //post naar databank (AJAX)
             let formData = new FormData();
+            formData.append("user_firstname", "<?php echo $_SESSION['firstname']; ?>");
             formData.append("text", text);
             formData.append("rating", rating);
             formData.append("product_id", product_id);
 
+
             fetch("ajax/addReview.php", {
                 method: "POST",
-                body: formData
+                body: formData,
             })
-            .then(response => response.text()) // Wijzig naar text() om ruwe serveroutput te inspecteren
+            .then(response => response.json()) // Geef de JSON-data door
             .then(result => {
                 console.log("Serverresponse:", result); // Controleer de inhoud
                 let newReview = document.createElement("li");
-                newReview.innerHTML = result.body;
+                newReview.innerHTML = 
+                `   <strong>${result.user_firstname}</strong>: 
+                    <p> ${result.rating} </p>
+                    <p> ${result.body}</p>`; 
+
+                console.log(result.body);
+
                 document
                         .querySelector(".reviewslist")
                         .appendChild(newReview);
@@ -148,6 +158,7 @@ $allReviews = Review::getAll($product_id);
             .catch(error => {
                 console.error("Error:", error);
             });
+
 
 
         });

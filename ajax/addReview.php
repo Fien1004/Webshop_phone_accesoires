@@ -48,6 +48,9 @@ if (!empty($_POST)) {
             'user_firstname' => htmlspecialchars($review->getUser_firstname()), // Gebruikersnaam
             'message' => 'Review toegevoegd!' // Succesbericht
         ];
+        header('Content-Type: application/json');
+        echo json_encode($response); 
+        exit;
 
     } catch (Exception $e) {
         // Stuur een fout-response
@@ -56,8 +59,8 @@ if (!empty($_POST)) {
             'message' => $e->getMessage()
         ];
 
-        echo json_encode($response);
         header('Content-Type: application/json');
+        echo json_encode($response);
         exit;
     }
 }
