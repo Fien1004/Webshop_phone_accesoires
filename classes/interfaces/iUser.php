@@ -13,5 +13,15 @@ interface iUser {
     public function save(); 
     public static function getAll(); 
     public static function emailExists($email);
+    public function getAddress();
+    public function setAddress($address);
+    public function getPostalCode();
+    public function setPostalCode($postal_code);
+    public function getCity();
+    public function setCity($city);
+    public function getCountry();
+    public function setCountry($country);
+    public function getWallet();
+    public function setWallet($wallet);
 }
 

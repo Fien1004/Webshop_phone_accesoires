@@ -63,7 +63,7 @@ try {
         <a href="admin.php" class="navbar__admin">Admin</a>
     <?php endif; ?>
     
-    <a href="logout.php" class="navbar__logout">Logout?</a>
+    <a href="profile.php" class="navbar__logout">Mijn profiel</a>
 </nav>
 
 <!-- Categorieën -->
