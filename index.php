@@ -1,9 +1,7 @@
 <?php
 include_once (__DIR__ . '/bootstrap.php');
-//include_once __DIR__ . '/classes/Cart.php';
-// Importeer de Cart klasse
-use Fienwouters\Onlinestore\Cart;
 
+use Fienwouters\Onlinestore\Cart;
 use Fienwouters\Onlinestore\Db;
 
 // Check of de gebruiker is ingelogd

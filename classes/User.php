@@ -1,7 +1,7 @@
 <?php
 namespace Fienwouters\Onlinestore;
 
-use \Fienwouters\Onlinestore\Interfaces\iUser;
+use Fienwouters\Onlinestore\Interfaces\iUser;
 use PDO;
 use PDOException;
 
@@ -16,7 +16,6 @@ class User implements iUser {
     private $city;
     private $country;
     private $wallet;
-
 
     // Voeg getters en setters toe voor de id-eigenschap
     public function getId() {
@@ -34,7 +33,7 @@ class User implements iUser {
 
     public function setFirstname($firstname) {
         if (empty($firstname)) {
-            throw new Exception('Firstname is required');
+            throw new \Exception('Firstname is required');
         }
         $this->firstname = $firstname;
         return $this;
@@ -46,7 +45,7 @@ class User implements iUser {
     
     public function setLastname($lastname) {
         if (empty($lastname)) {
-            throw new Exception('Lastname is required');
+            throw new \Exception('Lastname is required');
         }
         $this->lastname = $lastname;
         return $this;
@@ -58,7 +57,7 @@ class User implements iUser {
     
     public function setEmail($email) {
         if (empty($email)) {
-            throw new Exception('Email is required');
+            throw new \Exception('Email is required');
         }
         $this->email = $email;
         return $this;
@@ -70,7 +69,7 @@ class User implements iUser {
     
     public function setPassword($password) {
         if (empty($password)) {
-            throw new Exception('Password is required');
+            throw new \Exception('Password is required');
         }
         $options = ['cost' => 12];
         $this->password = password_hash($password, PASSWORD_DEFAULT, $options);
@@ -83,7 +82,7 @@ class User implements iUser {
 
     public function setAddress($address) {
         if (empty($address)) {
-            throw new Exception('Address is required');
+            throw new \Exception('Address is required');
         }
         $this->address = $address;
         return $this;
@@ -95,7 +94,7 @@ class User implements iUser {
 
     public function setPostalCode($postal_code) {
         if (empty($postal_code)) {
-            throw new Exception('Postal code is required');
+            throw new \Exception('Postal code is required');
         }
         $this->postal_code = $postal_code;
         return $this;
@@ -107,7 +106,7 @@ class User implements iUser {
 
     public function setCity($city) {
         if (empty($city)) {
-            throw new Exception('City is required');
+            throw new \Exception('City is required');
         }
         $this->city = $city;
         return $this;
@@ -119,7 +118,7 @@ class User implements iUser {
 
     public function setCountry($country) {
         if (empty($country)) {
-            throw new Exception('Country is required');
+            throw new \Exception('Country is required');
         }
         $this->country = $country;
         return $this;
@@ -131,7 +130,7 @@ class User implements iUser {
 
     public function setWallet($wallet) {
         if (empty($wallet)) {
-            throw new Exception('Wallet is required');
+            throw new \Exception('Wallet is required');
         }
         $this->wallet = $wallet;
         return $this;
@@ -195,7 +194,7 @@ class User implements iUser {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
         if (!$user || !password_verify($currentPassword, $user['password'])) {
-            throw new Exception("Huidig wachtwoord is onjuist.");
+            throw new \Exception("Huidig wachtwoord is onjuist.");
         }
     
         // Hash het nieuwe wachtwoord

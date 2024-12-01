@@ -24,4 +24,4 @@ interface iUser {
     public function getWallet();
     public function setWallet($wallet);
 }
-
+?>
