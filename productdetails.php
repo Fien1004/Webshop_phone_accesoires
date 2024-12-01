@@ -1,11 +1,10 @@
 <?php
-require_once __DIR__ . '/bootstrap.php';
-require_once(__DIR__ . '/vendor/autoload.php');
+require_once (__DIR__ . '/bootstrap.php');
 
 use Fienwouters\Onlinestore\Review;
-
-
 use Fienwouters\Onlinestore\Product;
+use Fienwouters\Onlinestore\Cart;
+
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("Location: login.php");
     exit();
@@ -33,12 +32,24 @@ if (isset($_GET['id'])) {
     }
 } else {
     echo "Product niet gespecificeerd!";
-    exit;
+    exit();
 }
 
 $allReviews = Review::getAll($product_id);
-//var_dump($allReviews);
 
+// Verwerk het formulier voor het toevoegen aan het winkelmandje
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_to_cart'])) {
+    $quantity = $_POST['quantity'];
+    $user_id = $_SESSION['user']['id'];
+    $cart = new Cart($user_id);
+
+    try {
+        $cart->addProduct($product_id, $quantity);
+        $message = "Product toegevoegd aan winkelmandje!";
+    } catch (Exception $e) {
+        $message = "Fout bij het toevoegen aan winkelmandje: " . $e->getMessage();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,15 +67,17 @@ $allReviews = Review::getAll($product_id);
             <input type="text" name="search" placeholder="Zoek producten...">
         </form>
 
-        <!-- Admin link voor admin-gebruiker --> 
-        <?php if ($isAdmin): ?> 
-            <a href="admin.php" class="navbar__admin">Admin</a> 
+        <!-- Admin link voor admin-gebruiker -->
+        <?php if ($isAdmin): ?>
+            <a href="admin.php" class="navbar__admin">Admin</a>
         <?php endif; ?>
-        
+
+        <a href="cart_view.php">Winkelmandje</a>
+
         <a href="profile.php" class="navbar__logout">Mijn profiel</a>
     </nav>
 
-    <!-- Product -->
+    <!-- Productdetails -->
     <div class="product-details">
         <img src="<?php echo htmlspecialchars($productData['img']); ?>" alt="<?php echo htmlspecialchars($productData['product_name']); ?>" class="product-details__img">
         <div class="product-details__info">
@@ -72,10 +85,21 @@ $allReviews = Review::getAll($product_id);
             <p class="product-details__price">Prijs: €<?php echo htmlspecialchars($productData['unit_price']); ?></p>
             <h3>Overzicht</h3>
             <p class="product-details__description"><?php echo html_entity_decode($productData['discription']); ?></p>
+        
+            <!-- Toevoegen aan winkelmandje -->
+            <?php if (isset($message)): ?>
+                <p><?php echo htmlspecialchars($message); ?></p>
+            <?php endif; ?>
+            <form action="" method="post">
+                <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
+                <label for="quantity">Aantal:</label>
+                <input type="number" id="quantity" name="quantity" value="1" min="1">
+                <button type="submit" name="add_to_cart">Toevoegen aan winkelmandje</button>
+            </form>
         </div>
     </div>
 
-    <!-- Review formulier -->
+    <!-- Review sectie -->
     <h3>Laat een review achter:</h3>
     <div id="review-form">
         <input id="reviewText" type="text" placeholder="Schrijf hier je review...">
@@ -85,31 +109,27 @@ $allReviews = Review::getAll($product_id);
             <option value="⭐⭐☆☆☆">⭐⭐☆☆☆</option>
             <option value="⭐⭐⭐☆☆">⭐⭐⭐☆☆</option>
             <option value="⭐⭐⭐⭐☆">⭐⭐⭐⭐☆</option>
-            <option value="⭐️⭐️⭐️⭐️⭐️">⭐️⭐️⭐️⭐️⭐️</option>
+            <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐</option>
         </select>
         <a href="#" id="addReview" data-product_id="<?php echo htmlspecialchars($product_id); ?>">Verstuur review</a>
-        </div>
-        <ul class="reviewslist">
-            <!-- Reviews worden hier ingeladen -->
-            <?php foreach($allReviews as $review): ?>
-                <li>
-                    <p><strong><?php echo htmlspecialchars($review['user_firstname']); ?></strong></p>
-                    <p>Rating: <?php echo htmlspecialchars($review['rating']); ?></p>
-                    <p><?php echo htmlspecialchars($review['text']); ?></p>
-                </li>
-            <?php endforeach; ?>
-        </ul>
+    </div>
+
+    <ul class="reviewslist">
+        <!-- Reviews worden hier ingeladen -->
+        <?php foreach($allReviews as $review): ?>
+            <li>
+                <p><strong><?php echo htmlspecialchars($review['user_firstname']); ?></strong></p>
+                <p>Rating: <?php echo htmlspecialchars($review['rating']); ?></p>
+                <p><?php echo htmlspecialchars($review['text']); ?></p>
+            </li>
+        <?php endforeach; ?>
+    </ul>
 
     <script>
-        document.querySelector("#addReview").addEventListener("click", function(e){
-
+        document.querySelector("#addReview").addEventListener("click", function(e) {
             e.preventDefault();
             
-            //product_id?
-            //review tekst?
-            //rating?
-
-            let product_id = this.dataset.product_id; // Haal het product_id uit de dataset
+            let product_id = this.dataset.product_id;
             let text = document.querySelector("#reviewText").value;
             let rating = document.querySelector("#rating").value;
 
@@ -118,52 +138,30 @@ $allReviews = Review::getAll($product_id);
                 return;
             }
 
-            console.log("Product ID:", product_id);
-            console.log("Review tekst:", text);
-            console.log("Rating:", rating);
-            console.log("User ID:", <?php echo $_SESSION['user']['id']; ?>);
-            console.log("User firstname:", "<?php echo $_SESSION['firstname']; ?>");
-
-            //post naar databank (AJAX)
             let formData = new FormData();
             formData.append("user_firstname", "<?php echo $_SESSION['firstname']; ?>");
             formData.append("text", text);
             formData.append("rating", rating);
             formData.append("product_id", product_id);
 
-
             fetch("ajax/addReview.php", {
                 method: "POST",
                 body: formData,
             })
-            .then(response => response.json()) // Geef de JSON-data door
+            .then(response => response.json())
             .then(result => {
-                console.log("Serverresponse:", result); // Controleer de inhoud
                 let newReview = document.createElement("li");
                 newReview.innerHTML = 
-                `   <strong>${result.user_firstname}</strong>: 
-                    <p> ${result.rating} </p>
-                    <p> ${result.body}</p>`; 
+                `<strong>${result.user_firstname}</strong>
+                <p>${result.rating}</p>
+                <p>${result.body}</p>`;
 
-                console.log(result.body);
-
-                document
-                        .querySelector(".reviewslist")
-                        .appendChild(newReview);
-
-                // Reset de form-velden
+                document.querySelector(".reviewslist").appendChild(newReview);
                 document.querySelector("#reviewText").value = "";
                 document.querySelector("#rating").value = "";
             })
-            .catch(error => {
-                console.error("Error:", error);
-            });
-
-
-
+            .catch(error => console.error("Error:", error));
         });
-
     </script>
-
 </body>
 </html>

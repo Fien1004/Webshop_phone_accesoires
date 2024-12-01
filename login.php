@@ -53,6 +53,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 					<label for="Password">Password</label>
 					<input type="password" name="password">
 				</div>
+				<div class="form__field">
+					<input type="submit" value="Sign in" class="btn btn--primary">	
+				</div>
                 <div class="form__field">
 				<p>Don't have an account? <a href="signup.php" class="btn btn--secondary">Sign up</a></p>
 			    </div>

@@ -48,10 +48,7 @@ try {
 <body>
     <nav class="navbar">
         <a href="index.php">Home</a>
-        
-        <form action="" method="get">
-            <input type="text" name="search" placeholder="Zoek producten...">
-        </form>
+        <a href="cart_view.php">Winkelmandje</a>
 
         <!-- Admin link voor admin-gebruiker -->
         <?php if ($isAdmin): ?>
@@ -65,10 +62,13 @@ try {
         <h1>Mijn Profiel</h1>
         <p><strong>Naam:</strong> <?php echo htmlspecialchars($user['firstname'] . " " . $user['lastname']); ?></p>
         <p><strong>E-mailadres:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-        <p><strong>Addres:</strong> <?php echo htmlspecialchars($user['address']) . " " . htmlspecialchars($user['postal_code']); ?></p>
+        <p><strong>Addres:</strong> <?php echo htmlspecialchars($user['address']) ?></p>
+        <p><strong>Postcode:</strong> <?php echo htmlspecialchars($user['postal_code']); ?></p>
         <p><strong>Stad:</strong> <?php echo htmlspecialchars($user['city']); ?></p>
         <p><strong>Land:</strong> <?php echo htmlspecialchars($user['country']); ?></p>
         <p><strong>Saldo:</strong> €<?php echo htmlspecialchars($user['wallet']); ?></p>
+        <h2>Bestellingen</h2>
+        <a href="orders.php">Bekijk mijn bestellingen</a>
 
         <h2>Profiel beheren</h2>
         <a href="update_profile.php">Bewerk je profiel</a>
