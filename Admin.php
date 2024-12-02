@@ -2,6 +2,7 @@
 require_once __DIR__ . '/bootstrap.php';
 use Fienwouters\Onlinestore\Db;
 use Fienwouters\Onlinestore\Product;
+use Fienwouters\Onlinestore\User;
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $_SESSION['is_admin'] !== 1) {
     // Als ze niet ingelogd zijn of geen admin, stuur ze naar de loginpagina
