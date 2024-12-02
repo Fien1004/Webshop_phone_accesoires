@@ -10,7 +10,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = User::canLogin($email, $password);
 
     if ($user) {
-		session_start();
         $_SESSION['user'] = $user;
 		$_SESSION['user_id'] = $user['id'];
 		$_SESSION['is_admin'] = $user['is_admin']; // 1 = true, 0 = false
