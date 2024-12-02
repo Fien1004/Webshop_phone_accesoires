@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/bootstrap.php';
-include_once(__DIR__ . "/classes/Db.php");
-include_once(__DIR__ . "/classes/Product.php");
+use Fienwouters\Onlinestore\Db;
 use Fienwouters\Onlinestore\Product;
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $_SESSION['is_admin'] !== 1) {
