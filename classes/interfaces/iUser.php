@@ -1,5 +1,5 @@
 <?php
-namespace Fienwouters\Onlinestore\Interfaces;
+namespace Fienwouters\Onlinestore\interfaces;
 
 interface iUser {
     public function getFirstname();
