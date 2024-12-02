@@ -7,6 +7,11 @@ if (!empty($_POST)) {
     $password = $_POST['password'];
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
+    $address = $_POST['address'];
+    $postal_code = $_POST['postal_code'];
+    $city = $_POST['city'];
+    $country = $_POST['country'];
+
 
     try {
         // Controleer of het e-mailadres al bestaat
@@ -20,6 +25,10 @@ if (!empty($_POST)) {
              ->setLastname($lastname)
              ->setEmail($email)
              ->setPassword($password)
+                ->setAddress($address)
+                ->setPostalCode($postal_code)
+                ->setCity($city)
+                ->setCountry($country)
              ->save(); // Sla de gebruiker op
         
         // Redirect naar de loginpagina na succesvolle registratie
@@ -68,6 +77,26 @@ if (!empty($_POST)) {
                 <div class="form__field">
                     <label for="password">Password</label>
                     <input type="password" name="password">
+                </div>
+
+                <div class="form__field">
+                    <label for="address">Address</label>
+                    <input type="text" name="address">
+                </div>
+
+                <div class="form__field">
+                    <label for="postal_code">Postal Code</label>
+                    <input type="text" name="postal_code">
+                </div>
+
+                <div class="form__field">
+                    <label for="city">City</label>
+                    <input type="text" name="city">
+                </div>
+
+                <div class="form__field">
+                    <label for="country">Country</label>
+                    <input type="text" name="country">
                 </div>
 
                 <div class="form__field">
