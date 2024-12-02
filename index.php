@@ -111,8 +111,8 @@ try {
                 <!-- Formulier voor toevoegen aan winkelmandje -->
                 <form action="index.php" method="post">
                     <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                    <label for="quantity_<?php echo $product['id']; ?>">Aantal:</label>
-                    <input type="number" id="quantity_<?php echo $product['id']; ?>" name="quantity" value="1" min="1">
+                    <!-- <label for="quantity_<?//php echo $product['id']; ?>">Aantal:</label>
+                    <input type="number" id="quantity_<?php //echo $product['id']; ?>" name="quantity" value="1" min="1"> -->
                     <button type="submit">Toevoegen aan winkelmandje</button>
                 </form>
             </article>
