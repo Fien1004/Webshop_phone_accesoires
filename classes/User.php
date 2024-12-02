@@ -2,7 +2,7 @@
 namespace Fienwouters\Onlinestore;
 use Fienwouters\Onlinestore\Db;
 
-use Fienwouters\Onlinestore\Interfaces\iUser;
+use Fienwouters\Onlinestore\interfaces\iUser;
 use PDO;
 use PDOException;
 
