@@ -1,5 +1,6 @@
 <?php
 namespace Fienwouters\Onlinestore;
+use Fienwouters\Onlinestore\Db;
 
 use Fienwouters\Onlinestore\Interfaces\iUser;
 use PDO;
