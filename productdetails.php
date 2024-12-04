@@ -63,8 +63,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_to_cart'])) {
     <nav class="navbar">
         <a href="index.php">Home</a>
         
-        <form action="" method="get">
-            <input type="text" name="search" placeholder="Zoek producten...">
+        <form action="index.php" method="get">
+            <input type="text" name="search" placeholder="Zoek producten..." value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+            <button type="submit">Zoeken</button>
         </form>
 
         <!-- Admin link voor admin-gebruiker -->
@@ -83,9 +84,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_to_cart'])) {
         <div class="product-details__info">
             <h1><?php echo htmlspecialchars($productData['product_name']); ?></h1>
             <p class="product-details__price">Prijs: €<?php echo htmlspecialchars($productData['unit_price']); ?></p>
-            <h3>Overzicht</h3>
-            <p class="product-details__description"><?php echo html_entity_decode($productData['discription']); ?></p>
-        
             <!-- Toevoegen aan winkelmandje -->
             <?php if (isset($message)): ?>
                 <p><?php echo htmlspecialchars($message); ?></p>
@@ -96,6 +94,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_to_cart'])) {
                 <input type="number" id="quantity" name="quantity" value="1" min="1">
                 <button type="submit" name="add_to_cart">Toevoegen aan winkelmandje</button>
             </form>
+            <h3>Overzicht</h3>
+            <p class="product-details__description"><?php echo html_entity_decode($productData['discription']); ?></p>
+        
         </div>
     </div>
 

@@ -39,12 +39,18 @@ try {
     echo "Fout bij het ophalen van categorieën: " . $e->getMessage();
 }
 
+// Zoekterm verwerken
+$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+
 // Haal producten op uit de database
 $products = [];
 try {
     $conn = Db::getConnection();
     
-    if (isset($_GET['category'])) {
+    if (!empty($searchTerm)) {
+        $statement = $conn->prepare("SELECT * FROM products WHERE product_name LIKE :searchTerm OR discription LIKE :searchTerm");
+        $statement->bindValue(':searchTerm', '%' . $searchTerm . '%', PDO::PARAM_STR);
+    } elseif (isset($_GET['category'])) {
         $category_id = $_GET['category'];
         $statement = $conn->prepare("SELECT * FROM products WHERE category_id = :category_id");
         $statement->bindValue(':category_id', $category_id, PDO::PARAM_INT);
@@ -71,7 +77,8 @@ try {
     <a href="index.php">Home</a>
     
     <form action="" method="get">
-        <input type="text" name="search" placeholder="Zoek producten...">
+        <input type="text" name="search" placeholder="Zoek producten..." value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+        <button type="submit">Zoeken</button>
     </form>
 
     <!-- Admin link voor admin-gebruiker -->
@@ -111,8 +118,6 @@ try {
                 <!-- Formulier voor toevoegen aan winkelmandje -->
                 <form action="index.php" method="post">
                     <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                    <!-- <label for="quantity_<?//php echo $product['id']; ?>">Aantal:</label>
-                    <input type="number" id="quantity_<?php //echo $product['id']; ?>" name="quantity" value="1" min="1"> -->
                     <button type="submit">Toevoegen aan winkelmandje</button>
                 </form>
             </article>
