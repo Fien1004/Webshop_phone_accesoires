@@ -1,7 +1,11 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once __DIR__ . '/bootstrap.php';
 
-use Fienwouters\Onlinestore\Db;
+use Fienwouters\Onlinestore\Order;
 
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
@@ -9,19 +13,11 @@ if (!isset($_SESSION['user'])) {
 }
 
 $user_id = $_SESSION['user']['id'];
+$order = new Order($user_id);
 
 try {
-    $conn = Db::getConnection();
-    $stmt = $conn->prepare("
-        SELECT o.id, o.total_price, o.order_date, u.firstname, u.lastname, u.email, u.address, u.postal_code, u.city, u.country
-        FROM orders o
-        JOIN users u ON o.user_id = u.id
-        WHERE o.user_id = :user_id
-    ");
-    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
+    $orders = $order->getOrders();
+} catch (Exception $e) {
     echo "Fout bij het ophalen van bestellingen: " . $e->getMessage();
 }
 ?>
@@ -53,6 +49,10 @@ try {
                 <th>Naam</th>
                 <th>E-mailadres</th>
                 <th>Adres</th>
+                <th>Product</th>
+                <th>Type</th>
+                <th>Aantal</th>
+                <th>Prijs</th>
             </tr>
         </thead>
         <tbody>
@@ -64,6 +64,10 @@ try {
                     <td><?php echo htmlspecialchars($order['firstname'] . ' ' . $order['lastname']); ?></td>
                     <td><?php echo htmlspecialchars($order['email']); ?></td>
                     <td><?php echo htmlspecialchars($order['address'] . ', ' . $order['postal_code'] . ' ' . $order['city'] . ', ' . $order['country']); ?></td>
+                    <td><?php echo htmlspecialchars($order['product_name']); ?></td>
+                    <td><?php echo htmlspecialchars($order['product_type']); ?></td>
+                    <td><?php echo htmlspecialchars($order['quantity']); ?></td>
+                    <td>€<?php echo number_format($order['unit_price'], 2, ',', '.'); ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

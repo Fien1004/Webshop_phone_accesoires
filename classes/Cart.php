@@ -15,31 +15,35 @@ class Cart {
     }
 
     // Voeg product toe aan winkelmandje
-    public function addProduct($product_id, $quantity) {
+    public function addProduct($product_id, $quantity, $product_type) {
         $conn = Db::getConnection();
     
         // Controleer of het product al in het winkelmandje staat
-        $stmt = $conn->prepare("SELECT * FROM cart WHERE user_id = :user_id AND product_id = :product_id");
+        $stmt = $conn->prepare("SELECT * FROM cart WHERE user_id = :user_id AND product_id = :product_id AND product_type = :product_type");
         $stmt->bindValue(':user_id', $this->user_id, PDO::PARAM_INT);
         $stmt->bindValue(':product_id', $product_id, PDO::PARAM_INT);
+        $stmt->bindValue(':product_type', $product_type, PDO::PARAM_STR);
         $stmt->execute();
         
         if ($stmt->rowCount() > 0) {
             // Als het product al bestaat, verhoog dan de hoeveelheid
-            $stmt = $conn->prepare("UPDATE cart SET quantity = quantity + :quantity WHERE user_id = :user_id AND product_id = :product_id");
+            $stmt = $conn->prepare("UPDATE cart SET quantity = quantity + :quantity WHERE user_id = :user_id AND product_id = :product_id AND product_type = :product_type");
             $stmt->bindValue(':user_id', $this->user_id, PDO::PARAM_INT);
             $stmt->bindValue(':product_id', $product_id, PDO::PARAM_INT);
+            $stmt->bindValue(':product_type', $product_type, PDO::PARAM_STR);
             $stmt->bindValue(':quantity', $quantity, PDO::PARAM_INT);
             $stmt->execute();
         } else {
             // Anders voeg het product toe aan het winkelmandje
-            $stmt = $conn->prepare("INSERT INTO cart (user_id, product_id, quantity) VALUES (:user_id, :product_id, :quantity)");
+            $stmt = $conn->prepare("INSERT INTO cart (user_id, product_id, quantity, product_type) VALUES (:user_id, :product_id, :quantity, :product_type)");
             $stmt->bindValue(':user_id', $this->user_id, PDO::PARAM_INT);
             $stmt->bindValue(':product_id', $product_id, PDO::PARAM_INT);
             $stmt->bindValue(':quantity', $quantity, PDO::PARAM_INT);
+            $stmt->bindValue(':product_type', $product_type, PDO::PARAM_STR);
             $stmt->execute();
         }
     }
+    
 
     // Verwijder product uit winkelmandje
     public function removeProduct($product_id) {
@@ -53,13 +57,12 @@ class Cart {
         }
     }
 
-    // Haal alle producten uit het winkelmandje op
     public function getCartItems() {
         try {
-            $stmt = $this->db->prepare("SELECT * FROM cart WHERE user_id = :user_id");
+            $stmt = $this->db->prepare("SELECT c.product_id, p.product_name, p.unit_price, c.quantity, c.product_type FROM cart c JOIN products p ON c.product_id = p.id WHERE c.user_id = :user_id");
             $stmt->bindValue(':user_id', $this->user_id);
             $stmt->execute();
-            return $stmt->fetchAll();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             throw new Exception("Fout bij het ophalen van winkelmandje items: " . $e->getMessage());
         }

@@ -18,6 +18,7 @@ interface iProduct {
     public function setImage($image);
     public function save();
     public function fetch();
+    public function getProductTypes();
     public static function search($searchTerm);
     public static function delete($id);
 }

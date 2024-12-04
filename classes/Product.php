@@ -111,6 +111,18 @@ class Product implements iProduct {
         }
     }
 
+    public function getProductTypes() {
+        try {
+            $conn = Db::getConnection();
+            $statement = $conn->prepare("SELECT * FROM product_types WHERE product_id = :product_id");
+            $statement->bindValue(':product_id', $this->id, PDO::PARAM_INT);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception('Failed to fetch product types: ' . $e->getMessage());
+        }
+    }
+
     public static function search($searchTerm) {
         try {
             $conn = Db::getConnection();

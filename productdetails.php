@@ -1,6 +1,10 @@
 <?php
 require_once (__DIR__ . '/bootstrap.php');
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 use Fienwouters\Onlinestore\Review;
 use Fienwouters\Onlinestore\Product;
 use Fienwouters\Onlinestore\Cart;
@@ -35,16 +39,20 @@ if (isset($_GET['id'])) {
     exit();
 }
 
+// Haal producttypes op
+$productTypes = $product->getProductTypes();
+
 $allReviews = Review::getAll($product_id);
 
 // Verwerk het formulier voor het toevoegen aan het winkelmandje
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_to_cart'])) {
     $quantity = $_POST['quantity'];
+    $product_type = $_POST['product_type']; // Haal het producttype op uit het formulier
     $user_id = $_SESSION['user']['id'];
     $cart = new Cart($user_id);
 
     try {
-        $cart->addProduct($product_id, $quantity);
+        $cart->addProduct($product_id, $quantity, $product_type); // Geef het producttype door
         $message = "Product toegevoegd aan winkelmandje!";
     } catch (Exception $e) {
         $message = "Fout bij het toevoegen aan winkelmandje: " . $e->getMessage();
@@ -92,6 +100,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_to_cart'])) {
                 <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
                 <label for="quantity">Aantal:</label>
                 <input type="number" id="quantity" name="quantity" value="1" min="1">
+                
+                <label for="product_type">Type:</label>
+                <select id="product_type" name="product_type">
+                    <?php foreach ($productTypes as $type): ?>
+                        <option value="<?php echo htmlspecialchars($type['type_name']); ?>" data-img="<?php echo htmlspecialchars($type['img']); ?>">
+                            <?php echo htmlspecialchars($type['type_name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                
                 <button type="submit" name="add_to_cart">Toevoegen aan winkelmandje</button>
             </form>
             <h3>Overzicht</h3>
@@ -127,6 +145,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_to_cart'])) {
     </ul>
 
     <script>
+        document.querySelector("#product_type").addEventListener("change", function() {
+            let selectedOption = this.options[this.selectedIndex];
+            let newImgSrc = selectedOption.getAttribute("data-img");
+            document.querySelector(".product-details__img").src = newImgSrc;
+        });
+
         document.querySelector("#addReview").addEventListener("click", function(e) {
             e.preventDefault();
             

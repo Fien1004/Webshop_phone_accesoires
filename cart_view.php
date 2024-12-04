@@ -26,17 +26,8 @@ if (isset($_GET['removeProduct'])) {
 
 try {
     // Haal de producten op die in het winkelmandje van de gebruiker zitten
-    $conn = Db::getConnection();
-    $statement = $conn->prepare("
-        SELECT c.product_id, p.product_name, p.unit_price, c.quantity 
-        FROM cart c
-        JOIN products p ON c.product_id = p.id
-        WHERE c.user_id = :user_id
-    ");
-    $statement->bindValue(':user_id', $user_id, PDO::PARAM_INT); // Bind de juiste user_id
-    $statement->execute();
-    $cart_items = $statement->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
+    $cart_items = $cart->getCartItems();
+} catch (Exception $e) {
     echo "Fout bij het ophalen van het winkelmandje: " . $e->getMessage();
 }
 ?>
@@ -73,6 +64,7 @@ try {
         <thead>
             <tr>
                 <th>Product</th>
+                <th>Type</th>
                 <th>Prijs</th>
                 <th>Aantal</th>
                 <th>Actie</th>
@@ -83,6 +75,7 @@ try {
             <?php foreach ($cart_items as $item): ?>
                 <tr>
                     <td><?php echo htmlspecialchars($item['product_name']); ?></td>
+                    <td><?php echo htmlspecialchars($item['product_type']); ?></td>
                     <td>€<?php echo number_format($item['unit_price'], 2, ',', '.'); ?></td>
                     <td><?php echo htmlspecialchars($item['quantity']); ?></td>
                     <td>
