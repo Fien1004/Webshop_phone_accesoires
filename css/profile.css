@@ -1,0 +1,96 @@
+/* Algemene opmaak voor de profielpagina */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container voor het profiel en secties */
+.container {
+    width: 80%;
+    margin: 20px auto;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Titel van de pagina */
+h1 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+/* Algemene profielinformatie */
+p {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+strong {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Links voor beheeropties */
+a {
+    display: block;
+    font-size: 1.1em;
+    color: #333;
+    margin: 10px 0;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #007bff;
+}
+
+/* Beheer secties */
+h2 {
+    font-size: 1.5em;
+    margin-top: 30px;
+    color: #333;
+}
+
+/* Formulier voor account verwijderen */
+form {
+    margin-top: 20px;
+}
+
+form p {
+    font-size: 1.1em;
+    color: #d9534f;
+    font-weight: bold;
+}
+
+button.btn-danger {
+    padding: 10px 15px;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.btn-danger:hover {
+    background-color: #c9302c;
+}
+
+/* Logout knop */
+.navbar__logout {
+    background-color: #d9534f;
+    padding: 5px 10px;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.navbar__logout:hover {
+    background-color: #c9302c;
+}

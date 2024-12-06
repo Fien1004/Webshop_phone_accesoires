@@ -112,13 +112,13 @@ try {
         <a class="product" href="productdetails.php?id=<?php echo $product['id']; ?>">
             <article>
                 <img src="<?php echo htmlspecialchars($product['img']); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>" style="max-width: 200px; margin-bottom: 10px;">
-                <h2><?php echo htmlspecialchars($product['product_name']); ?></h2>
+                <h3 class="product_name"><?php echo htmlspecialchars($product['product_name']); ?></h3>
                 <p>Prijs: €<?php echo htmlspecialchars($product['unit_price']); ?></p>
 
                 <!-- Formulier voor toevoegen aan winkelmandje -->
                 <form action="index.php" method="post">
                     <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                    <button type="submit">Toevoegen aan winkelmandje</button>
+                    <button class="btn_cart" type="submit">Toevoegen aan winkelmandje</button>
                 </form>
             </article>
         </a>

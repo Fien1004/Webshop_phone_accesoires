@@ -60,12 +60,12 @@ if (!empty($_POST)) {
                 <?php endif; ?>
 
                 <div class="form__field">
-                    <label for="firstname">Firstname</label>
+                    <label for="firstname">Voornaam</label>
                     <input type="text" name="firstname">
                 </div>
 
                 <div class="form__field">
-                    <label for="lastname">Lastname</label>
+                    <label for="lastname">Achternaam</label>
                     <input type="text" name="lastname">
                 </div>
 
@@ -75,28 +75,35 @@ if (!empty($_POST)) {
                 </div>
 
                 <div class="form__field">
-                    <label for="password">Password</label>
+                    <label for="password">Wachtwoord</label>
                     <input type="password" name="password">
                 </div>
 
                 <div class="form__field">
-                    <label for="address">Address</label>
+                    <label for="address">Adres</label>
                     <input type="text" name="address">
                 </div>
 
-                <div class="form__field">
-                    <label for="postal_code">Postal Code</label>
-                    <input type="text" name="postal_code">
+                <div class="form__field form__field--inline">
+                    <div class="form__inline-item">
+                        <label for="postal_code">Postcode</label>
+                        <input type="text" name="postal_code">
+                    </div>
+                    <div class="form__inline-item">
+                        <label for="city">Stad</label>
+                        <input type="text" name="city">
+                    </div>
                 </div>
 
                 <div class="form__field">
-                    <label for="city">City</label>
-                    <input type="text" name="city">
-                </div>
-
-                <div class="form__field">
-                    <label for="country">Country</label>
-                    <input type="text" name="country">
+                    <label for="country">Land</label>
+                    <select name="country" id="country">
+                        <option value="">Selecteer jouw land</option>
+                        <option value="BE">België</option>
+                        <option value="NL">Nederland</option>
+                        <option value="DE">Duitsland</option>
+                        <option value="FR">Frankrijk</option>
+                    </select>
                 </div>
 
                 <div class="form__field">

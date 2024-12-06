@@ -16,15 +16,16 @@ body {
 }
 
 .form--login {
-  background-color: beige;
+  background-color: #ebebeb;
   padding: 1em;
   color: black;
   grid-column: form;
   grid-row: form;
+  border-radius: 10px;
 }
 
 .form__error {
-  background-color: #6972b6;
+  background-color: #73aee2;
   font-weight: lighter;
   padding: 0.3em 1em;
   margin-bottom: 1em;
@@ -51,6 +52,8 @@ body {
   padding: 0.3em;
   font-size: 1.4em;
   box-sizing: border-box; /* Zorgt ervoor dat padding niet de breedte beïnvloedt */
+  border-radius: 5px;
+  border: none;
 }
 
 .btn {
@@ -58,13 +61,14 @@ body {
   padding: 0.3em;
   font-size: 1.4em;
   box-sizing: border-box; /* Zorgt ervoor dat padding niet de breedte beïnvloedt */
+  border-radius: 5px;
   margin: 0.5em auto;
   text-align: center;
   display: inline-block; /* Zorg ervoor dat de knop inline-block is voor consistentie */
 }
 
 .btn--primary {
-  background-color: blue;
+  background-color: #73aee2;
   color: white;
   border: none;
   padding: 0.3em 2em;
@@ -77,6 +81,26 @@ body {
   font-size: 1em;
   display: inline-block;
   width: auto; /* Zorgt ervoor dat de breedte van de link automatisch is */
+}
+
+.form__field--inline {
+  display: flex;
+  gap: 1em; /* Ruimte tussen de velden */
+}
+
+.form__inline-item {
+  flex: 1; /* Zorgt ervoor dat de items evenveel ruimte innemen */
+  display: flex;
+  flex-direction: column;
+}
+
+.form__field select {
+  width: 100%;
+  padding: 0.3em;
+  font-size: 1.4em;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: none;
 }
 
 /* navbar */
@@ -93,12 +117,34 @@ body {
   text-decoration: none;
   color: #333;
   font-weight: bold;
+  font-size: 18px;
 }
 
 .navbar a:hover {
-  color: #007bff;
+  color: #73aee2;
 }
 
+.navbar form {
+  display: flex;
+  align-items: center;
+  border: none;
+}
+
+.navbar input[type="text"] {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.navbar button {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #848484;
+  color: white;
+}
+
+/* Categorieën */
 .categories {
   display: flex;
   justify-content: center;
@@ -108,11 +154,11 @@ body {
 .categories a {
   margin: 0 10px;
   text-decoration: none;
-  color: #007bff;
+  color: black;
 }
 
 .categories a:hover {
-  color: #007bff;
+  color: #73aee2;
 }
 
 /* Artikel page */
@@ -134,11 +180,6 @@ img {
   height: auto;
 }
 
-.categories a {
-  margin-right: 10px;
-  color: black;
-}
-
 .product {
   text-decoration: none;
   color: black;
@@ -146,48 +187,172 @@ img {
   border-radius: 8px;
 }
 
+.product_name {
+  font-size: 22px;
+  margin: 10px 0;
+}
+
+.btn_cart {
+  background-color: #73aee2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.3em 2em;
+  margin-top: 10px;
+}
+
 .product:hover {
   border: 3px solid #ccc;
 }
 
-/* product page */
+/* Productdetails container */
 .product-details {
-  display: flex;
-  flex-direction: row;
-  margin: 20px;
+  max-width: 120em;
+  margin: 20px auto;
+  background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
-  overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-.product-details__img {
-  width: 50%;
-  height: auto;
-  object-fit: cover;
+/* Productinformatie: afbeelding en details naast elkaar */
+.product-details_container {
+  display: flex;
+  gap: 20px;
+}
+
+.product-details_container img {
+  max-width: 550px;
+  border-radius: 8px;
 }
 
 .product-details__info {
-  padding: 20px;
-  margin-top: 8em;
-  width: 50%;
+  flex: 1;
 }
 
 .product-details__info h1 {
-  font-size: 35px;
+  font-size: 1.8rem;
   margin-bottom: 10px;
 }
 
 .product-details__price {
-  font-size: 20px;
-  color: black;
-  margin-bottom: 15px;
+  font-size: 1.2rem;
+  margin: 10px 0;
+  color: #73aee2;
+  font-weight: bold;
+}
+
+.product-details_container label {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+
+}
+
+.product-details_container input[type="number"] {
+  padding: 8px;
+  width: 50px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.product-details_container select {
+  padding: 8px;
+  width: 150px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.product-details__info button {
+  padding: 10px 10px;
+  background-color: #333;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+
+.product-details__info p {
+  font-size: 1rem;
+  margin: 8px 0;
 }
 
 .product-details__description {
-  font-size: 16px;
-  line-height: 1.6;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  line-height: 1.5;
   color: #555;
+}
+
+/* Reviews container */
+#review-form {
+  margin-top: 20px;
+  padding: 20px 0;
+  border-top: 1px solid #ddd;
+}
+
+#review-form h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+#review-form input,
+#review-form select {
+  margin: 10px 0;
+  padding: 8px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+#review-form a {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+#review-form a:hover {
+  background-color: #555;
+}
+
+/* Lijst van reviews */
+.reviewslist {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.reviewslist li {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.reviewslist li strong {
+  font-size: 1rem;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.reviewslist li p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: #333;
 }
 
 /* Admin page */

@@ -88,61 +88,63 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_to_cart'])) {
 
     <!-- Productdetails -->
     <div class="product-details">
-        <img src="<?php echo htmlspecialchars($productData['img']); ?>" alt="<?php echo htmlspecialchars($productData['product_name']); ?>" class="product-details__img">
-        <div class="product-details__info">
-            <h1><?php echo htmlspecialchars($productData['product_name']); ?></h1>
-            <p class="product-details__price">Prijs: €<?php echo htmlspecialchars($productData['unit_price']); ?></p>
-            <!-- Toevoegen aan winkelmandje -->
-            <?php if (isset($message)): ?>
-                <p><?php echo htmlspecialchars($message); ?></p>
-            <?php endif; ?>
-            <form action="" method="post">
-                <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
-                <label for="quantity">Aantal:</label>
-                <input type="number" id="quantity" name="quantity" value="1" min="1">
-                
-                <label for="product_type">Type:</label>
-                <select id="product_type" name="product_type">
-                    <?php foreach ($productTypes as $type): ?>
-                        <option value="<?php echo htmlspecialchars($type['type_name']); ?>" data-img="<?php echo htmlspecialchars($type['img']); ?>">
-                            <?php echo htmlspecialchars($type['type_name']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-                
-                <button type="submit" name="add_to_cart">Toevoegen aan winkelmandje</button>
-            </form>
-            <h3>Overzicht</h3>
-            <p class="product-details__description"><?php echo html_entity_decode($productData['discription']); ?></p>
-        
+        <div class="product-details_container">
+            <img src="<?php echo htmlspecialchars($productData['img']); ?>" alt="<?php echo htmlspecialchars($productData['product_name']); ?>" class="product-details__img">
+            <div class="product-details__info">
+                <h1><?php echo htmlspecialchars($productData['product_name']); ?></h1>
+                <p class="product-details__price">Prijs: €<?php echo htmlspecialchars($productData['unit_price']); ?></p>
+                <!-- Toevoegen aan winkelmandje -->
+                <?php if (isset($message)): ?>
+                    <p><?php echo htmlspecialchars($message); ?></p>
+                <?php endif; ?>
+                <form class="add_cart" action="" method="post">
+                    <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
+                    <label for="quantity">Aantal:</label>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1">
+                    
+                    <label for="product_type">Type:</label>
+                    <select id="product_type" name="product_type">
+                        <?php foreach ($productTypes as $type): ?>
+                            <option value="<?php echo htmlspecialchars($type['type_name']); ?>" data-img="<?php echo htmlspecialchars($type['img']); ?>">
+                                <?php echo htmlspecialchars($type['type_name']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    
+                    <button type="submit" name="add_to_cart">Toevoegen aan winkelmandje</button>
+                </form>
+                <h3>Overzicht</h3>
+                <p class="product-details__description"><?php echo html_entity_decode($productData['discription']); ?></p>
+            
+            </div>
         </div>
+        <!-- Review sectie -->
+        <div id="review-form">
+            <h3>Laat een review achter:</h3>
+            <input id="reviewText" type="text" placeholder="Schrijf hier je review...">
+            <select name="rating" id="rating" required>
+                <option value="">Kies een rating</option>
+                <option value="⭐☆☆☆☆">⭐☆☆☆☆</option>
+                <option value="⭐⭐☆☆☆">⭐⭐☆☆☆</option>
+                <option value="⭐⭐⭐☆☆">⭐⭐⭐☆☆</option>
+                <option value="⭐⭐⭐⭐☆">⭐⭐⭐⭐☆</option>
+                <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐</option>
+            </select>
+            <a href="#" id="addReview" data-product_id="<?php echo htmlspecialchars($product_id); ?>">Verstuur review</a>
+        </div>
+    
+        <ul class="reviewslist">
+            <!-- Reviews worden hier ingeladen -->
+            <?php foreach($allReviews as $review): ?>
+                <li>
+                    <p><strong><?php echo htmlspecialchars($review['user_firstname']); ?></strong></p>
+                    <p>Rating: <?php echo htmlspecialchars($review['rating']); ?></p>
+                    <p><?php echo htmlspecialchars($review['text']); ?></p>
+                </li>
+            <?php endforeach; ?>
+        </ul>
     </div>
 
-    <!-- Review sectie -->
-    <h3>Laat een review achter:</h3>
-    <div id="review-form">
-        <input id="reviewText" type="text" placeholder="Schrijf hier je review...">
-        <select name="rating" id="rating" required>
-            <option value="">Kies een rating</option>
-            <option value="⭐☆☆☆☆">⭐☆☆☆☆</option>
-            <option value="⭐⭐☆☆☆">⭐⭐☆☆☆</option>
-            <option value="⭐⭐⭐☆☆">⭐⭐⭐☆☆</option>
-            <option value="⭐⭐⭐⭐☆">⭐⭐⭐⭐☆</option>
-            <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐</option>
-        </select>
-        <a href="#" id="addReview" data-product_id="<?php echo htmlspecialchars($product_id); ?>">Verstuur review</a>
-    </div>
-
-    <ul class="reviewslist">
-        <!-- Reviews worden hier ingeladen -->
-        <?php foreach($allReviews as $review): ?>
-            <li>
-                <p><strong><?php echo htmlspecialchars($review['user_firstname']); ?></strong></p>
-                <p>Rating: <?php echo htmlspecialchars($review['rating']); ?></p>
-                <p><?php echo htmlspecialchars($review['text']); ?></p>
-            </li>
-        <?php endforeach; ?>
-    </ul>
 
     <script>
         document.querySelector("#product_type").addEventListener("change", function() {

@@ -1,0 +1,45 @@
+/* Algemene opmaak voor de checkout pagina */
+.checkout {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.checkout__title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.checkout__message {
+    background-color: #f8f8f8;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.checkout__link, .checkout__back-link {
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+.checkout__link:hover, .checkout__back-link:hover {
+    background-color: #0056b3;
+}
+
+.checkout__back-link {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.checkout__back-link:hover {
+    background-color: #e0e0e0;
+}

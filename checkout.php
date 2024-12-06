@@ -62,20 +62,23 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Afrekenen</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/checkout.css">
 </head>
 <body>
 <nav class="navbar">
-    <a href="index.php">Home</a>
-    <a href="cart_view.php">Winkelmandje</a>
+    <a href="index.php" class="navbar__link">Home</a>
+    <a href="cart_view.php" class="navbar__link">Winkelmandje</a>
     <a href="profile.php" class="navbar__logout">Mijn profiel</a>
 </nav>
-<h1>Afrekenen</h1>
+<main class="checkout">
+    <h1 class="checkout__title">Afrekenen</h1>
 
-<?php if (isset($message)): ?>
-    <p><?php echo htmlspecialchars($message); ?></p>
-    <a href="orders.php">Bekijk mijn bestellingen</a>
-<?php endif; ?>
+    <?php if (isset($message)): ?>
+        <p class="checkout__message"><?php echo htmlspecialchars($message); ?></p>
+        <a href="orders.php" class="checkout__link">Bekijk mijn bestellingen</a>
+    <?php endif; ?>
 
-<a href="index.php">Terug naar Home</a>
+    <a href="index.php" class="checkout__back-link">Terug naar Home</a>
+</main>
 </body>
 </html>

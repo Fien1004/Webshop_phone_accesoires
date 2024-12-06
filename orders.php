@@ -28,6 +28,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mijn Bestellingen</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/orders.css">
 </head>
 <body>
 <nav class="navbar">
@@ -74,6 +75,6 @@ try {
     </table>
 <?php endif; ?>
 
-<a href="index.php">Terug naar Home</a>
+<a class="btn_back" href="index.php">Terug naar Home</a>
 </body>
 </html>
