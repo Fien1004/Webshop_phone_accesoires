@@ -4,8 +4,6 @@ use Fienwouters\Onlinestore\Db;
 use Fienwouters\Onlinestore\Product;
 use Fienwouters\Onlinestore\User;
 
-session_start();
-
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $_SESSION['is_admin'] !== 1) {
     // Geen toegang als geen admin
     header("Location: login.php");
